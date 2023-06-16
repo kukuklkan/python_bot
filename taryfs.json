@@ -1,0 +1,99 @@
+[
+    {
+        "name": "SimpleLife",
+        "cost": 80,
+        "gigabytes": 8,
+        "minutes": 300,
+        "sms": 0,
+        "roaming": false
+    },
+    
+    {
+        "name": "SmartLife",
+        "cost": 120,
+        "gigabytes": 25,
+        "minutes": 800,
+        "sms": 0,
+        "roaming": false
+    },
+    {
+        "name": "FreeLife",
+        "cost": 180,
+        "gigabytes": "infinity",
+        "minutes": 1600,
+        "sms": 0,
+        "roaming": false
+    },
+    {
+        "name": "FamilyL",
+        "cost": 500,
+        "gigabytes": 50,
+        "minutes": 1500,
+        "sms": 1500,
+        "roaming": false
+    },
+    {
+        "name": "FamilyM",
+        "cost": 425,
+        "gigabytes": 30,
+        "minutes": 750,
+        "sms": 1000,
+        "roaming": false
+    },
+    {
+        "name": "FamilyS",
+        "cost": 375,
+        "gigabytes": 20,
+        "minutes": 500,
+        "sms": 500,
+        "roaming": false
+    },
+    {
+        "name": "Gadgetablet",
+        "cost": 375,
+        "gigabytes": 20,
+        "minutes": 500,
+        "sms": 500,
+        "roaming": false
+    },
+    {
+        "name": "GadgetSmart",
+        "cost": 150,
+        "gigabytes": 0.5,
+        "minutes": 50,
+        "sms": 50,
+        "roaming": false
+    },
+    {
+        "name": "GadgetRouter",
+        "cost": 375,
+        "gigabytes": "infinity",
+        "minutes": 0,
+        "sms": 0,
+        "roaming": false
+    },
+    {
+        "name": "GadgetSafe",
+        "cost": 90,
+        "gigabytes": 0.15,
+        "minutes": 15,
+        "sms": 15,
+        "roaming": false
+    },
+    {
+        "name": "SchoolLife",
+        "cost": 150,
+        "gigabytes": 7,
+        "minutes": "infity",
+        "sms": 0,
+        "roaming": false
+    },
+    {
+        "name": "PlatinumLife",
+        "cost": 250,
+        "gigabytes": "infinity",
+        "minutes": 3000,
+        "sms": 50,
+        "roaming": false
+    }
+]
