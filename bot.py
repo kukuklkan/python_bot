@@ -30,12 +30,22 @@ def hello(message):
 #   Обробка кнопок
 @bot.callback_query_handler(func=lambda call: True)
 def calldack(call):
+    class Holder():
+        def set(self, value):
+            self.value = value
+        def get(self, get_value = 0):
+            self.get_value = get_value + self.value
+            return self.get_value
+def ensure(x):
+    if x: yield x        
     msg_id = call.message.message_id
     user_name = call.from_user.first_name
     user_id = call.from_user.id
     chat_id = call.message.chat.id
     profile_link = f'<a href="tg://user?id={user_id}">{user_name}</a>'
-    cost_for_hand_made = 120
+    cost_of_handmade = Holder()
+    result_minutes = Holder()
+    result_gigabytes = Holder()
     if call.message:
         if call.data == 'tariff':
             markup = telebot.types.InlineKeyboardMarkup(row_width=1)
@@ -60,50 +70,104 @@ def calldack(call):
             bot.send_message(chat_id, f'Скiльки бажаете мiнiмум гiгабайтiв?', reply_markup=markup)
         elif call.data == 'handmade':
             markup = telebot.types.InlineKeyboardMarkup(row_width=1)
-            gigabytes = telebot.types.InlineKeyboardButton('🌐Кількість Гігабайтів', callback_data='gigabytes_for_hand_made')
-            minutes = telebot.types.InlineKeyboardButton('⌚Кількість Хвилин', callback_data='minutes_for_hand_made')
-            markup.add(gigabytes, minutes)
+            start_in_hand_made = telebot.types.InlineKeyboardButton('🚀Почнемо складати ваший перснальний тариф!', callback_data='gigabytes_for_hand_made')
+            markup.add(start_in_hand_made)
             bot.send_message(chat_id, f'Виберіть одну з опцій на ваш вибір.', reply_markup=markup)
+            result_gigabytes.set(0)
+            result_minutes.set(0)
+
+        # Buttons for Gigabytes
         elif call.data == 'gigabytes_for_hand_made':
             markup = telebot.types.InlineKeyboardMarkup(row_width=4)
-            zero_gigabates = telebot.types.InlineKeyboardButton('0️⃣', callback_data='zero_gigabytes')
-            four_gigabates = telebot.types.InlineKeyboardButton('4️⃣', callback_data='four_gigabytes')
-            ten_gigabates = telebot.types.InlineKeyboardButton('🔟', callback_data='ten_gigabytes')
-            twenty_plus_gigabates = telebot.types.InlineKeyboardButton('2️⃣0️⃣+', callback_data='twenty_plus_gigabytes')
+            zero_gigabates = telebot.types.InlineKeyboardButton('0️⃣', callback_data='sub_result_zero')
+            four_gigabates = telebot.types.InlineKeyboardButton('4️⃣', callback_data='sub_result_four')
+            ten_gigabates = telebot.types.InlineKeyboardButton('🔟', callback_data='sub_result_ten')
+            twenty_plus_gigabates = telebot.types.InlineKeyboardButton('2️⃣0️⃣+', callback_data='sub_result_twenty')
             markup.add(zero_gigabates, four_gigabates, ten_gigabates, twenty_plus_gigabates)
             bot.send_message(chat_id, f'Скільки потребуєте гігабайтів для використання?', reply_markup=markup)
+        # Sub level in taking gigabytes
+        elif call.data == 'sub_result_zero':
+            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+            result_gigabytes.set(0)
+            cost_of_handmade.set(0)
+            sub_result = telebot.types.InlineKeyboardButton('🚀Продовжимо', callback_data='minutes_for_hand_made')
+            back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='gigabytes_for_hand_made')
+            markup.add(sub_result, back)
+            bot.send_message(chat_id, f'Було вибрано 0 Гігабайтів для користування!', reply_markup=markup)
+        elif call.data == 'sub_result_four':
+            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+            result_gigabytes.set(4)
+            cost_of_handmade.get(40)
+            sub_result = telebot.types.InlineKeyboardButton('🚀Продовжимо', callback_data='minutes_for_hand_made')
+            back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='gigabytes_for_hand_made')
+            markup.add(sub_result, back)
+            bot.send_message(chat_id, f'Було вибрано 4 Гігабайтів для користування!', reply_markup=markup)
+        elif call.data == 'sub_result_ten':
+            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+            result_gigabytes.set(10)
+            cost_of_handmade.get(45)
+            sub_result = telebot.types.InlineKeyboardButton('🚀Продовжимо', callback_data='minutes_for_hand_made')
+            back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='gigabytes_for_hand_made')
+            markup.add(sub_result, back)
+            bot.send_message(chat_id, f'Було вибрано 10 Гігабайтів для користування!', reply_markup=markup)
+        elif call.data == 'sub_result_twenty':
+            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+            result_gigabytes.set(20)
+            cost_of_handmade.get(105)
+            sub_result = telebot.types.InlineKeyboardButton('🚀Продовжимо', callback_data='minutes_for_hand_made')
+            back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='gigabytes_for_hand_made')
+            markup.add(sub_result, back)
+            bot.send_message(chat_id, f'Було вибрано 20+ Гігабайтів для користування!', reply_markup=markup)
+        # Button for Minutes
         elif call.data == "minutes_for_hand_made":
             markup = telebot.types.InlineKeyboardMarkup(row_width=4)
-            zero_minutes = telebot.types.InlineKeyboardButton('0️⃣', callback_data='zero_minutes')
-            hundred_minutes = telebot.types.InlineKeyboardButton('1️⃣0️⃣0️⃣', callback_data='hundred_minutes')
-            two_hundred_minutes = telebot.types.InlineKeyboardButton('2️⃣0️⃣0️⃣', callback_data='two_hundred_minutes')
-            five_hundred_minutes = telebot.types.InlineKeyboardButton('5️⃣0️⃣0️⃣', callback_data='five_hundred_minutes')
+            zero_minutes = telebot.types.InlineKeyboardButton('0️⃣', callback_data='sub_result_zero_minutes')
+            hundred_minutes = telebot.types.InlineKeyboardButton('1️⃣0️⃣0️⃣', callback_data='sub_result_hundred_minutes')
+            two_hundred_minutes = telebot.types.InlineKeyboardButton('2️⃣0️⃣0️⃣', callback_data='sub_result_twohundred_minutes')
+            five_hundred_minutes = telebot.types.InlineKeyboardButton('5️⃣0️⃣0️⃣', callback_data='sub_result_fivehundred_minutes')
             markup.add(zero_minutes, hundred_minutes, two_hundred_minutes, five_hundred_minutes)
             bot.send_message(chat_id, f'Скільки потребуєте хвилин для використання?', reply_markup=markup)
-        elif call.data == 'zero_gigabytes':
-            result_gigabytes = 0
-            cost_for_hand_made += 0
-        elif call.data == 'four_gigabytes':
-            result_gigabytes = 4
-            cost_for_hand_made += 40
-        elif call.data == 'ten_gigabytes':
-            result_gigabytes = 10
-            cost_for_hand_made += 65
-        elif call.data == 'twenty_plus_gigabytes':
-            result_gigabytes = '20+'
-            cost_for_hand_made += 125
-        elif call.data == 'zero_minutes':
-            result_minutes = 0
-            cost_for_hand_made += 0
-        elif call.data == 'hundred_minutes':
-            result_minutes = 100
-            cost_for_hand_made += 30
-        elif call.data == 'two_hundred_minutes':
-            result_minutes = 200
-            cost_for_hand_made += 50
-        elif call.data == 'five_hundred_minutes':
-            result_minutes = 500
-            cost_for_hand_made += 140
+        # Sub level of taking minutes
+        elif call.data == 'sub_result_zero_minutes':
+            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+            result_minutes.set(0)
+            cost_of_handmade.get(0)
+            sub_result = telebot.types.InlineKeyboardButton('🚀Продовжимо', callback_data='taryf_for_hand_made')
+            back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='minutes_for_hand_made')
+            markup.add(sub_result, back)
+            bot.send_message(chat_id, f'Було вибрано 0 Хвилин для користування!', reply_markup=markup)
+        elif call.data == 'sub_result_hundred_minutes':
+            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+            result_minutes.set(100)
+            cost_of_handmade.get(30)
+            sub_result = telebot.types.InlineKeyboardButton('🚀Продовжимо', callback_data='taryf_for_hand_made')
+            back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='minutes_for_hand_made')
+            markup.add(sub_result, back)
+            bot.send_message(chat_id, f'Було вибрано 100 Хвилин для користування!', reply_markup=markup)
+        elif call.data == 'sub_result_twohundred_minutes':
+            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+            result_minutes.set(200)
+            cost_of_handmade.get(50)
+            sub_result = telebot.types.InlineKeyboardButton('🚀Продовжимо', callback_data='taryf_for_hand_made')
+            back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='minutes_for_hand_made')
+            markup.add(sub_result, back)
+            bot.send_message(chat_id, f'Було вибрано 200 Хвилин для користування!', reply_markup=markup)
+        elif call.data == 'sub_result_fivehundred_minutes':
+            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+            result_minutes.set(500)
+            cost_of_handmade.get(140)
+            sub_result = telebot.types.InlineKeyboardButton('🚀Продовжимо', callback_data='taryf_for_hand_made')
+            back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='minutes_for_hand_made')
+            markup.add(sub_result, back)
+            bot.send_message(chat_id, f'Було вибрано 500 Хвилин для користування!', reply_markup=markup)
+        # Result of choosing
+        elif call.data == 'taryf_for_hand_made':
+            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+            change_taryf = telebot.types.InlineKeyboardButton('♻️Змінити данні тарифу', callback_data='handmade')
+            back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='tariff')
+            markup.add(change_taryf, back)
+            print(result_gigabytes.get())
+            bot.send_message(chat_id, f'Тариф який ви зібрали:\nГігабайти: {result_gigabytes.get()}\nХвилини: {result_minutes.get()}\nЦіна вашого тарифу: {cost_of_handmade.get()}грн.\nДля зміни тарифу натисніть нижче (Змінити данні тарифу) або для вибору тарифу з наявних натисніть (Повернутися назад).', reply_markup = markup)
         elif call.data == 'one':
             filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 1]
         elif call.data == 'two':
@@ -124,7 +188,6 @@ def calldack(call):
             filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 9]
         elif call.data == 'ten':
             filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 10]
-
 
 
 
