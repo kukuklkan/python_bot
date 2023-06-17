@@ -63,7 +63,7 @@ def calldack(call):
             gigabytes = telebot.types.InlineKeyboardButton('🌐Кількість Гігабайтів', callback_data='gigabytes_for_hand_made')
             minutes = telebot.types.InlineKeyboardButton('⌚Кількість Хвилин', callback_data='minutes_for_hand_made')
             markup.add(gigabytes, minutes)
-            bot.send_message(chat_id, f'Виберіть одну з оцій на ваш вибір.', reply_markup=markup)
+            bot.send_message(chat_id, f'Виберіть одну з опцій на ваш вибір.', reply_markup=markup)
         elif call.data == 'gigabytes_for_hand_made':
             markup = telebot.types.InlineKeyboardMarkup(row_width=4)
             zero_gigabates = telebot.types.InlineKeyboardButton('0️⃣', callback_data='zero_gigabytes')
