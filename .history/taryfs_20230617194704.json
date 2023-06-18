@@ -24,7 +24,7 @@
             {   "FreeLife": {
                     "name": "Вільний Лайф",
                     "cost": 180,
-                    "gigabytes": 999,
+                    "gigabytes": "infinity",
                     "minutes": 1600,
                     "sms": 0,
                     "roaming": false
@@ -78,7 +78,7 @@
             {   "GadgetRouter": {
                     "name": "Гаджет Роутер",
                     "cost": 375,
-                    "gigabytes": 999,
+                    "gigabytes": "infinity",
                     "minutes": 0,
                     "sms": 0,
                     "roaming": false
@@ -97,7 +97,7 @@
                     "name": "Шкільний Лайф",
                     "cost": 150,
                     "gigabytes": 7,
-                    "minutes": 999,
+                    "minutes": "infity",
                     "sms": 0,
                     "roaming": false
             }
@@ -105,7 +105,7 @@
             {   "PlatinumLife": {
                     "name": "Платинум Лайф",
                     "cost": 250,
-                    "gigabytes": 999,
+                    "gigabytes": "infinity",
                     "minutes": 3000,
                     "sms": 50,
                     "roaming": false

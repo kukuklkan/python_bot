@@ -4,7 +4,7 @@ from telebot import types
 import json
 
 #   Конфігурація бота
-TOKEN = '5665735947:AAG0MhcHkPhFxxYtmB1mbdrdHXXXKjpIH90'
+TOKEN = '6271089832:AAE4pT04iRrQZ7DwySc19_V2Tl7FeY-9y6I'
 bot = telebot.TeleBot(TOKEN)
 
 
@@ -35,6 +35,15 @@ def calldack(call):
     user_id = call.from_user.id
     chat_id = call.message.chat.id
     profile_link = f'<a href="tg://user?id={user_id}">{user_name}</a>'
+    global cost_of_handmade
+    cost_of_handmade = Holder()
+    cost_of_handmade.set(120)
+    global result_minutes
+    result_minutes = Holder()
+    result_minutes.set(0)
+    global result_gigabytes
+    result_gigabytes = Holder()
+    result_gigabytes.set(0)
     if call.message:
         if call.data == 'tariff':
             markup = telebot.types.InlineKeyboardMarkup(row_width=1)
@@ -43,12 +52,20 @@ def calldack(call):
             markup.add(default, handmade)
             bot.send_message(chat_id, f'Виберіть тип тарифу.', reply_markup=markup)
         elif call.data == 'default':
-            markup = telebot.types.InlineKeyboardMarkup(row_width=1)
-            twenty = telebot.types.InlineKeyboardButton('2️⃣0️⃣ та більше', callback_data='twenty')
-            ten = telebot.types.InlineKeyboardButton('🔟 та менше', callback_data='ten')
-            skip = telebot.types.InlineKeyboardButton('🚫Пропустити', callback_data='minutes_in_default_taryfs')
-            markup.add(ten, twenty, skip)
-            bot.send_message(chat_id, f'🌐Скільки потребуєте стільникового інтернету для користування?', reply_markup=markup)
+            markup = telebot.types.InlineKeyboardMarkup(row_width=5)
+            one = telebot.types.InlineKeyboardButton('1️⃣', callback_data='one')
+            two = telebot.types.InlineKeyboardButton('2️⃣', callback_data='two')
+            three = telebot.types.InlineKeyboardButton('3️⃣', callback_data='three')
+            four = telebot.types.InlineKeyboardButton('4️⃣', callback_data='four')
+            five = telebot.types.InlineKeyboardButton('5️⃣', callback_data='five')
+            six = telebot.types.InlineKeyboardButton('6️⃣', callback_data='six')
+            seven = telebot.types.InlineKeyboardButton('7️⃣', callback_data='seven')
+            eight = telebot.types.InlineKeyboardButton('8️⃣', callback_data='eight')
+            nine = telebot.types.InlineKeyboardButton('9️⃣', callback_data='nine')
+            ten = telebot.types.InlineKeyboardButton('🔟', callback_data='ten')
+            skip = telebot.types.InlineKeyboardButton('🚫Пропустити', callback_data='skip')
+            markup.add(one, two, three, four, five, six, seven, eight, nine, ten, skip)
+            bot.send_message(chat_id, f'Скiльки бажаете мiнiмум гiгабайтiв?', reply_markup=markup)
         elif call.data == 'handmade':
             markup = telebot.types.InlineKeyboardMarkup(row_width=1)
             start_in_hand_made = telebot.types.InlineKeyboardButton('🚀Почнемо складати ваший перснальний тариф!', callback_data='gigabytes_for_hand_made')
@@ -172,60 +189,30 @@ def calldack(call):
             back = telebot.types.InlineKeyboardButton('🔙Повернутися назад', callback_data='tariff')
             markup.add(change_taryf, back)
             bot.send_message(chat_id, f'Тариф який ви зібрали:\nГігабайти: {result_in_gigabytes}\nХвилини: {result_in_minutes}\nЦіна вашого тарифу: {result_in_cost}грн.\nДля зміни тарифу натисніть нижче (Змінити данні тарифу) або для вибору тарифу з наявних натисніть (Повернутися назад).', reply_markup = markup)
-        elif call.data == 'twenty':
-            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
-            filtered_tariffs = [tariff for tariff in tarrifs if int(tariff[list(tariff.keys())[0]]['gigabytes']) >= 20]
-            with open ('filtered.json', 'w') as filtered:
-                json.dump(filtered_tariffs, filtered)            
-            default_taryfs = telebot.types.InlineKeyboardButton('🚀Так продовжимо', callback_data='minutes_in_default_taryfs')
-            default_taryfs_no = telebot.types.InlineKeyboardButton('🚫Ні повернутися', callback_data='default')
-            markup.add(default_taryfs, default_taryfs_no)
-            bot.send_message(chat_id, f'Вам потрібно 20 та більше Гігабайтів?', reply_markup = markup)
+        elif call.data == 'one':
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 1]
+        elif call.data == 'two':
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 2]
+        elif call.data == 'three':
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 3]
+        elif call.data == 'four':
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 4]
+        elif call.data == 'five':
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 5]
+        elif call.data == 'six':
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 6]
+        elif call.data == 'seven':
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 7]
+        elif call.data == 'eight':
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 8]
+        elif call.data == 'nine':
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 9]
         elif call.data == 'ten':
-            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
-            filtered_tariffs = [tariff for tariff in tarrifs if int(tariff[list(tariff.keys())[0]]['gigabytes']) <= 10]
-            with open ('filtered.json', 'w') as filtered:
-                json.dump(filtered_tariffs, filtered)
-            default_taryfs = telebot.types.InlineKeyboardButton('🚀Так продовжимо', callback_data='minutes_in_default_taryfs')
-            default_taryfs_no = telebot.types.InlineKeyboardButton('🚫Ні повернутися', callback_data='default')
-            markup.add(default_taryfs, default_taryfs_no)
-            bot.send_message(chat_id, f'Вам потрібно 10 та менше Гігабайтів?', reply_markup = markup)
-        elif call.data == 'minutes_in_default_taryfs':
-            markup = telebot.types.InlineKeyboardMarkup(row_width=2)
-            twenty = telebot.types.InlineKeyboardButton('5️⃣0️⃣0️⃣ та більше', callback_data='500>')
-            ten = telebot.types.InlineKeyboardButton('5️⃣0️⃣0️⃣ та менше', callback_data='500<')
-            skip = telebot.types.InlineKeyboardButton('🚫Пропустити', callback_data='result_in_default_taryfs')
-            markup.add(ten, twenty, skip)
-            bot.send_message(chat_id, f'🌐Скільки потребуєте Хвилин для користування?', reply_markup=markup)            
-        elif call.data == '500>':
-            with open ('filtered.json', 'r') as filtered:
-                filtered_gigabytes = json.load(filtered)
-                filtered_minutes =  [tariff for tariff in filtered_gigabytes if int(tariff[list(tariff.keys())[0]]['minutes']) >= 500]
-                with open ('filtered.json', 'w') as filtered_minutes_json:
-                    json.dump(filtered_minutes, filtered_minutes_json)
-            markup = telebot.types.InlineKeyboardMarkup(row_width=1)
-            default_taryfs = telebot.types.InlineKeyboardButton('🚀Так продовжимо', callback_data='result_in_default_taryfs')
-            default_taryfs_no = telebot.types.InlineKeyboardButton('🚫Ні повернутися', callback_data='minutes_in_default_taryfs')            
-            markup.add(default_taryfs, default_taryfs_no)
-            bot.send_message(chat_id, f'Вам потрібно 500 та біше Хвилин?', reply_markup = markup)                     
-        elif call.data == '500<':
-            with open ('filtered.json', 'r') as filtered:
-                filtered_gigabytes = json.load(filtered)
-                filtered_minutes =  [tariff for tariff in filtered_gigabytes if int(tariff[list(tariff.keys())[0]]['minutes']) <= 500]
-                with open ('filtered.json', 'w') as filtered_minutes_json:
-                    json.dump(filtered_minutes, filtered_minutes_json)
-            markup = telebot.types.InlineKeyboardMarkup(row_width=1)
-            default_taryfs = telebot.types.InlineKeyboardButton('🚀Так продовжимо', callback_data='result_in_default_taryfs')
-            default_taryfs_no = telebot.types.InlineKeyboardButton('🚫Ні повернутися', callback_data='minutes_in_default_taryfs')            
-            markup.add(default_taryfs, default_taryfs_no)        
-            bot.send_message(chat_id, f'Вам потрібно 500 та менше Хвилин?', reply_markup = markup)
-        elif call.data == 'result_in_default_taryfs':
-            with open('filtered.json', 'r') as result_filtered:
-                filtered_result = json.load(result_filtered)
-                counter = 0
-                print(filtered_result)
-                while counter <= len(filtered_result):
-                    bot.send_message(chat_id, f'hello')
-                    counter += 1
-                bot.send_message(chat_id, f'Зручні для вас тарифи:')                                 
+            filtered_tariffs = [tariff for tariff in tariffs if tariff[list(tariff.keys())[0]]['gigabytes'] >= 10]
+
+
+
+
+
+
 bot.infinity_polling()

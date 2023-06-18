@@ -97,7 +97,7 @@
                     "name": "Шкільний Лайф",
                     "cost": 150,
                     "gigabytes": 7,
-                    "minutes": 999,
+                    "minutes": "infity",
                     "sms": 0,
                     "roaming": false
             }

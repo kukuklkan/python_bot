@@ -225,7 +225,6 @@ def calldack(call):
                 counter = 0
                 print(filtered_result)
                 while counter <= len(filtered_result):
-                    bot.send_message(chat_id, f'hello')
-                    counter += 1
+                    bot.send_message(chat_id, f'')
                 bot.send_message(chat_id, f'Зручні для вас тарифи:')                                 
 bot.infinity_polling()
